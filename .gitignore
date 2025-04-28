@@ -1,42 +1,78 @@
-# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+# Node.js
+/node_modules         
+# Ignorar las dependencias de Node
+npm-debug.log         
+# Ignorar archivos de debug de npm
+yarn-error.log        
+# Ignorar archivos de error de Yarn
 
-# Compiled output
-/dist
-/tmp
-/out-tsc
-/bazel-out
+# Compiled output (Angular y otros proyectos)
+dist                 
+# Directorio de salida de Angular
+/tmp                  
+# Archivos temporales generados por herramientas
+/out-tsc              
+# Archivos de TypeScript compilados
+/bazel-out            
+# Directorio de salida de Bazel
 
-# Node
-/node_modules
-npm-debug.log
-yarn-error.log
 
-# IDEs and editors
-.idea/
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
+# Archivos de configuración de IDEs y editores
+.idea/                
+# Directorio de configuración de JetBrains/IntelliJ
+.project              
+# Configuración del proyecto para Eclipse
+.classpath            
+# Configuración de Eclipse
+.c9/                  
+# Configuración de Cloud9
+*.launch              
+# Archivos de configuración de lanzamiento de IDEs
+.settings/            
+# Configuración de proyectos en Eclipse
+*.sublime-workspace   
+# Archivos de trabajo de Sublime Text
 
 # Visual Studio Code
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-.history/*
+.vscode/*             
+# Ignorar toda la configuración de VS Code
+!.vscode/settings.json 
+# Mantener los ajustes de VS Code
+!.vscode/tasks.json    
+# Mantener las tareas de VS Code
+!.vscode/launch.json   
+# Mantener el archivo de lanzamiento de VS Code
+!.vscode/extensions.json 
+# Mantener las extensiones de VS Code
+.history/*            
+# Archivos de historial de VS Code
 
-# Miscellaneous
-/.angular/cache
-.sass-cache/
-/connect.lock
-/coverage
-/libpeerconnection.log
-testem.log
-/typings
+# Archivos temporales de compilación y caché
+/.angular/cache       
+# Caché de Angular
+.sass-cache/          
+# Caché de Sass
+/connect.lock         
+# Bloqueo de la conexión
+/coverage             
+# Archivos de cobertura de pruebas
+/libpeerconnection.log  
+# Archivos de logs del sistema de WebRTC
+testem.log            
+# Archivos de logs de Testem
+/typings              
+# Typings de TypeScript (si no usas `@types` de npm)
 
-# System files
-.DS_Store
-Thumbs.db
+# Archivos del sistema operativo
+.DS_Store             
+# Archivos de sistema de macOS
+Thumbs.db             
+# Archivos de sistema de Windows
+
+.env                 
+# Archivos de configuración de entorno
+
+/dist/               
+# Archivos generados de distribución
+*.log                
+# Archivos de log generales
