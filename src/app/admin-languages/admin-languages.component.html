@@ -1,0 +1,23 @@
+<div class="container color-dark">
+    <div class="col">
+      <p>language items</p>
+    </div>
+  </div>
+  
+  <div class="container color-light">
+    <div class="col">
+      <form>
+        <input type="text" class="txt" name="idiomas" placeholder="Language" [(ngModel)]="myLanguage.idiomas"><br>
+        <input type="text" class="txt" name="nivel" placeholder="Level" [(ngModel)]="myLanguage.nivel"><br>
+        <input type="submit" class="btn" value="{{ btnText }}" (click)="addLanguage()">  <!-- btnText -->
+      </form>
+    </div>
+  
+    <div class="col">
+      <div class="life-container" *ngFor="let language of languagesData">
+        <input *ngIf="language.id" type="submit" class="txt" value="delete" (click)="deleteLanguage(language.id)">
+        {{language.idiomas}} - {{language.nivel}}
+      </div>
+    </div>
+  </div>
+  

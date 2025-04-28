@@ -1,0 +1,27 @@
+<div class="container color-dark">
+  <div class="col">
+    <p>education items</p>
+  </div>
+</div>
+
+<div class="container color-light">
+  <div class="col">
+    <form>
+      <input type="text" class="txt" name="school" placeholder="School" [(ngModel)]="myEducation.school" [ngModelOptions]="{standalone: true}" />
+      <br />
+      <input type="text" class="txt" name="training" placeholder="Training" [(ngModel)]="myEducation.training" [ngModelOptions]="{standalone: true}" />
+      <br />
+      <input type="text" class="txt" name="licenses" placeholder="Licenses" [(ngModel)]="myEducation.licenses" [ngModelOptions]="{standalone: true}" />
+      <br />
+      <input type="submit" class="btn" value="{{ btnText }}" (click)="addEducation()" />
+    </form>
+  </div>
+
+  <div class="col">
+    <div class="life-container" *ngFor="let education of educationData">
+      <!-- Comprobamos que education.id no sea undefined antes de hacer clic -->
+      <input *ngIf="education.id" type="submit" class="btn" value="Delete" (click)="deleteEducation(education.id)" />
+      <p>{{ education.school }} - {{ education.training }} - {{ education.licenses }}</p>
+    </div>
+  </div>
+</div>

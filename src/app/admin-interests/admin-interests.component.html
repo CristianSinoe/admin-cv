@@ -1,0 +1,22 @@
+<div class="container color-dark">
+    <div class="col">
+      <p>interest items</p>
+    </div>
+  </div>
+  
+  <div class="container color-light">
+    <div class="col">
+      <form>
+        <input type="text" class="txt" name="interes" placeholder="Interest" [(ngModel)]="myInterest.interes"><br>
+        <input type="submit" class="btn" value="{{ btnText }}" (click)="addInterest()">  <!-- btnText -->
+      </form>
+    </div>
+  
+    <div class="col">
+      <div class="life-container" *ngFor="let interest of interestsData">
+        <input *ngIf="interest.id" type="submit" class="txt" value="delete" (click)="deleteInterest(interest.id)">
+        {{interest.interes}}
+      </div>
+    </div>
+  </div>
+  
