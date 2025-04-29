@@ -1,50 +1,56 @@
 import { Component, OnInit } from '@angular/core';
 import { LanguagesService } from '../services/languages-service/languages.service';
 import { Languages } from '../models/languages/languages.model';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-admin-languages',
   templateUrl: './admin-languages.component.html',
   styleUrls: ['./admin-languages.component.css']
 })
-export class AdminLanguagesComponent implements OnInit {
-
+export class AdminLanguagesComponent {
+  languages: Languages[] = [];
   myLanguage: Languages = new Languages();
-  languagesData: Languages[] = [];
-  btnText: string = 'Add Language';
+  selectedLangId: string | null = null;
+  btntxt: string = "AGREGAR";
 
-  constructor(private languagesService: LanguagesService) {}
-
-  ngOnInit(): void {
-    this.loadLanguagesData();  // Cargar los datos de idiomas
-  }
-
-  loadLanguagesData(): void {
-    this.languagesService.getLanguages().subscribe(data => {
-      this.languagesData = data;
+  constructor(private languagesService: LanguagesService) {
+    this.languagesService.getLanguages().snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c => ({ id: c.payload.doc.id, ...c.payload.doc.data() }))
+      )
+    ).subscribe(data => {
+      this.languages = data;
     });
   }
 
-  addLanguage(): void {
-    if (this.myLanguage.idiomas && this.myLanguage.nivel) {
-      this.languagesService.createLanguage(this.myLanguage).then(() => {
-        this.loadLanguagesData();  // Recargar los datos después de agregar un nuevo idioma
-        this.myLanguage = new Languages();  // Limpiar los campos del formulario
-      });
+  agregarLanguage() {
+    if (this.selectedLangId) {
+      if (confirm('¿DESEAS EDITAR ESTE IDIOMA?')) {
+        this.languagesService.updateLanguage(this.selectedLangId, this.myLanguage).then(() => {
+          this.myLanguage = new Languages();
+          this.btntxt = "AGREGAR";
+          this.selectedLangId = null;
+        });
+      }
     } else {
-      console.error('All fields must be filled out.');
+      this.languagesService.createLanguage(this.myLanguage).then(() => {
+        this.myLanguage = new Languages();
+      });
     }
   }
 
-  deleteLanguage(id: string): void {
-    if (id) {
-      this.languagesService.deleteLanguage(id).then(() => {
-        this.loadLanguagesData();  // Recargar los datos después de eliminar un idioma
-      }).catch(error => {
-        console.error('Error deleting language: ', error);
-      });
-    } else {
-      console.error('Invalid language ID');
+  editarLanguage(lang: Languages) {
+    if (confirm('¿DESEAR CARGAR ESTE IDIOMA PARA EDITAR?')) {
+      this.myLanguage = { ...lang };
+      this.selectedLangId = lang.id!;
+      this.btntxt = "EDITAR";
+    }
+  }
+
+  deleteLanguage(id?: string) {
+    if (confirm('¿DESEAS ELIMINAR ESTE IDIOMA?')) {
+      this.languagesService.deleteLanguage(id);
     }
   }
 }

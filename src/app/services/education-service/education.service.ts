@@ -7,28 +7,27 @@ import { Education } from '../../models/education/education.model';
   providedIn: 'root'
 })
 export class EducationService {
-  private dbPath = '/education';
-  private educationRef: AngularFirestoreCollection<Education>;
+  private dbPath = '/Education';
+  educationRef: AngularFirestoreCollection<Education>;
 
-  constructor(private db: AngularFirestore) {
+  constructor(private db: AngularFirestore){ 
     this.educationRef = db.collection(this.dbPath);
   }
 
-  // Obtener todos los documentos de educación
-  getEducation(): Observable<Education[]> {
-    return this.educationRef.valueChanges();  // Aquí estamos devolviendo un Observable
+  getEducation(): AngularFirestoreCollection<Education>{
+    return this.educationRef;
   }
 
-  // Crear una nueva entrada de educación en la colección
-  createEducation(myEducation: Education): Promise<any> {
-    return this.educationRef.add({ ...myEducation });
+  createEducation(myEdu: Education): any {
+    return this.educationRef.add({ ...myEdu})
   }
 
-  // Eliminar un documento de educación por id
-  deleteEducation(id: string): Promise<void> {
-    if (!id) {
-      throw new Error('Invalid ID provided');
-    }
+  deleteEducation(id?: string): Promise<void> {
     return this.educationRef.doc(id).delete();
   }
+
+  updateEducation(id: string, data: Education): Promise<void> {
+    return this.educationRef.doc(id).update(data);
+  }
+  
 }

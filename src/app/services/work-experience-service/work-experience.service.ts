@@ -11,30 +11,24 @@ export class WorkExperienceService {
   private dbPath = '/work-experience';
   workExperienceRef: AngularFirestoreCollection<WorkExperience>;
 
-  constructor(private db: AngularFirestore) {
+  constructor(private db: AngularFirestore){
     this.workExperienceRef = db.collection(this.dbPath);
   }
 
-  // Usamos snapshotChanges() para obtener el id además de los datos
-  getWorkExperience(): Observable<WorkExperience[]> {
-    return this.workExperienceRef.snapshotChanges().pipe(
-      map(actions => 
-        actions.map(a => {
-          const data = a.payload.doc.data() as WorkExperience;
-          const id = a.payload.doc.id;
-          return { id, ...data };  // Incluimos el id dentro del objeto
-        })
-      )
-    );
+  getWorkExperience(): AngularFirestoreCollection<WorkExperience>{
+    return this.workExperienceRef;
   }
 
-  // Crear un nuevo trabajo en la colección
-  createWorkExperience(myJob: WorkExperience): Promise<any> {
-    return this.workExperienceRef.add({ ...myJob });
+  createWorkExperience(myJob: WorkExperience): any {
+    return this.workExperienceRef.add({ ...myJob});
   }
 
-  // Eliminar un trabajo por su id
-  deleteWorkExperience(id: string): Promise<void> {
+  deleteWorkExperience(id?: string): Promise<void> {
     return this.workExperienceRef.doc(id).delete();
   }
+
+  updateWorkExperience(id: string, data: WorkExperience): Promise<void> {
+    return this.workExperienceRef.doc(id).update(data);
+  }  
 }
+

@@ -1,20 +1,30 @@
 <div class="container color-dark">
   <div class="col">
-    <p>Header Information</p>
+    <p>HEADER</p>
   </div>
 </div>
 
 <div class="container color-light">
-  <div class="col">
-    <form>
-      <input type="text" class="txt" name="name" placeholder="Name" [(ngModel)]="header.name"><br>
-      <input type="text" class="txt" name="goalLife" placeholder="Goal Life" [(ngModel)]="header.goalLife"><br>
-      <input type="text" class="txt" name="photoUrl" placeholder="Photo URL" [(ngModel)]="header.photoUrl"><br>
-      <input type="email" class="txt" name="email" placeholder="Email" [(ngModel)]="header.email"><br>
-      <input type="text" class="txt" name="phoneNumber" placeholder="Phone Number" [(ngModel)]="header.phoneNumber"><br>
-      <input type="text" class="txt" name="location" placeholder="Location" [(ngModel)]="header.location"><br>
-      <input type="text" class="txt" name="socialNetwork" placeholder="Social Network" [(ngModel)]="header.socialNetwork"><br>
-      <input type="submit" class="btn" value="{{ btnText }}" (click)="updateHeader()">  <!-- btnText -->
-    </form>
+  <div class="row">
+    <div class="col-md-6" *ngIf="selectedHeaderId">
+      <form>
+        <input type="text" class="txt" placeholder="FULL NAME" [(ngModel)]="myHeader.name" name="name"><br>
+        <input type="text" class="txt" placeholder="LIFE GOAL" [(ngModel)]="myHeader.goalLife" name="goalLife"><br>
+        <input type="text" class="txt" placeholder="PHOTO URL" [(ngModel)]="myHeader.photoUrl" name="photoUrl"><br>
+        <input type="text" class="txt" placeholder="EMAIL" [(ngModel)]="myHeader.email" name="email"><br>
+        <input type="text" class="txt" placeholder="PHONE NUMBER" [(ngModel)]="myHeader.phoneNumber" name="phoneNumber"><br>
+        <input type="text" class="txt" placeholder="LOCATION" [(ngModel)]="myHeader.location" name="location"><br>
+        <input type="text" class="txt" placeholder="SOCIAL NETWORK" [(ngModel)]="myHeader.socialNetwork" name="socialNetwork"><br>
+
+        <input type="button" class="btn" [value]="btntxt" (click)="onSubmit()">
+      </form>
+    </div>
+    
+    <br>
+    <div class="col-md-6" *ngIf="dataLoaded && Header.length > 0">
+      <div *ngFor="let item of Header" class="life-container" style="margin-bottom: 1rem;" (click)="editarHeader(item)" style="margin-right: 10px;">
+        <p><strong>{{item.name}}</strong> - {{item.goalLife}}</p>
+      </div>
+    </div>
   </div>
 </div>

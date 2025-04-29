@@ -1,22 +1,28 @@
 <div class="container color-dark">
-    <div class="col">
-      <p>interest items</p>
-    </div>
+  <div class="col">
+    <p>INTERESTS</p>
   </div>
-  
-  <div class="container color-light">
-    <div class="col">
-      <form>
-        <input type="text" class="txt" name="interes" placeholder="Interest" [(ngModel)]="myInterest.interes"><br>
-        <input type="submit" class="btn" value="{{ btnText }}" (click)="addInterest()">  <!-- btnText -->
-      </form>
-    </div>
-  
-    <div class="col">
-      <div class="life-container" *ngFor="let interest of interestsData">
-        <input *ngIf="interest.id" type="submit" class="txt" value="delete" (click)="deleteInterest(interest.id)">
-        {{interest.interes}}
-      </div>
-    </div>
+</div>
+
+<div class="container color-light">
+  <div class="col">
+    <form>
+      <textarea rows="5" cols="40" class="txt" placeholder="DESCRIBE TU INTERES" [(ngModel)]="myInterest.interes" name="interes"></textarea>
+      <br>
+      <input type="button" class="btn" [value]="btntxt" (click)="agregarInterest()">
+    </form>
   </div>
+
+  <br>
+  <div class="col">
+    <p class="life-container" *ngFor="let inter of interests">
+      <br>
+      {{ inter.interes }}
+      <br>
+      <br>
+      <input type="button" class="btn" value="EDITAR" (click)="editarInterest(inter)" style="margin-right: 10px;">
+      <input type="button" class="btn" value="ELIMINAR" (click)="deleteInterest(inter.id)">
+    </p>
+  </div>
+</div>
   

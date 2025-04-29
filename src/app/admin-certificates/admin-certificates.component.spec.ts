@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { AdminCertificatesComponent } from './admin-certificates.component';
 
 describe('AdminCertificatesComponent', () => {

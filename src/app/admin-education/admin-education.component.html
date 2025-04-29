@@ -1,27 +1,27 @@
 <div class="container color-dark">
   <div class="col">
-    <p>education items</p>
+    <p>EDUCATION</p>
   </div>
 </div>
 
 <div class="container color-light">
   <div class="col">
     <form>
-      <input type="text" class="txt" name="school" placeholder="School" [(ngModel)]="myEducation.school" [ngModelOptions]="{standalone: true}" />
-      <br />
-      <input type="text" class="txt" name="training" placeholder="Training" [(ngModel)]="myEducation.training" [ngModelOptions]="{standalone: true}" />
-      <br />
-      <input type="text" class="txt" name="licenses" placeholder="Licenses" [(ngModel)]="myEducation.licenses" [ngModelOptions]="{standalone: true}" />
-      <br />
-      <input type="submit" class="btn" value="{{ btnText }}" (click)="addEducation()" />
+      <input type="text" class="txt" name="School" placeholder="SCHOOL" [(ngModel)]="myEducation.school"> <br>
+      <input type="text" class="txt" name="Training" placeholder="TRAINING" [(ngModel)]="myEducation.training"> <br>
+      <input type="text" class="txt" name="licenses" placeholder="LICENSES" [(ngModel)]="myEducation.licenses"> <br>
+      <input type="button" class="btn" value="{{ btntxt }}" (click)="AgregarEdu()">
     </form>
   </div>
 
+  <br>
   <div class="col">
-    <div class="life-container" *ngFor="let education of educationData">
-      <!-- Comprobamos que education.id no sea undefined antes de hacer clic -->
-      <input *ngIf="education.id" type="submit" class="btn" value="Delete" (click)="deleteEducation(education.id)" />
-      <p>{{ education.school }} - {{ education.training }} - {{ education.licenses }}</p>
-    </div>
+    <p class="life-container" *ngFor="let edu of education">
+      {{ edu.school }} - {{ edu.training }} - {{ edu.licenses }}
+      <br>
+      <br>
+      <input type="button" class="btn" value="BORRAR" (click)="deleteEducation(edu.id)" style="margin-right: 10px;">
+      <input type="button" class="btn" value="EDITAR" (click)="EditarEdu(edu)">
+    </p>
   </div>
 </div>

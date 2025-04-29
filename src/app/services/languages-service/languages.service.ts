@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFirestore, AngularFirestoreCollection} from '@angular/fire/compat/firestore';
 import { Languages } from '../../models/languages/languages.model';
 import { Observable } from 'rxjs';
 
@@ -7,24 +7,26 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class LanguagesService {
+  private dbPath = '/Languages';
+  languagesRef: AngularFirestoreCollection<Languages>;
 
-  private collectionName = 'languages';
-
-  constructor(private firestore: AngularFirestore) {}
-
-  // Obtener todos los idiomas
-  getLanguages(): Observable<Languages[]> {
-    return this.firestore.collection<Languages>(this.collectionName).valueChanges();
+  constructor(private db: AngularFirestore) {
+    this.languagesRef = db.collection(this.dbPath);
   }
 
-  // Crear un nuevo idioma
-  createLanguage(language: Languages): Promise<void> {
-    const id = this.firestore.createId();  // Crea un ID único para el documento
-    return this.firestore.collection(this.collectionName).doc(id).set(language);
+  getLanguages(): AngularFirestoreCollection<Languages> {
+    return this.languagesRef;
   }
 
-  // Eliminar un idioma
-  deleteLanguage(id: string): Promise<void> {
-    return this.firestore.collection(this.collectionName).doc(id).delete();
+  createLanguage(lang: Languages): any {
+    return this.languagesRef.add({ ...lang });
+  }
+
+  updateLanguage(id: string, lang: Languages): Promise<void> {
+    return this.languagesRef.doc(id).update(lang);
+  }
+
+  deleteLanguage(id?: string): Promise<void> {
+    return this.languagesRef.doc(id).delete();
   }
 }

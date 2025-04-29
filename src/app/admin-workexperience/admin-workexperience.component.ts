@@ -1,51 +1,69 @@
 import { Component, OnInit } from '@angular/core';
 import { WorkExperienceService } from '../services/work-experience-service/work-experience.service';
 import { WorkExperience } from '../models/work-experience/work-experience.model';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-admin-workexperience',
   templateUrl: './admin-workexperience.component.html',
   styleUrls: ['./admin-workexperience.component.css']
 })
-export class AdminWorkexperienceComponent implements OnInit {
+export class AdminWorkexperienceComponent {
+  itemCount: number = 0;
+  btntxt: string = "AGREGAR";
+  workExperience: WorkExperience[] = [];
+  myWorkExperience: WorkExperience = new WorkExperience();
+  selectedJobId: string | null = null;
 
-  myJob: WorkExperience = new WorkExperience();
-  workExperienceData: WorkExperience[] = [];
-  btnText: string = 'Add Work Experience';
-
-  constructor(private workExperienceService: WorkExperienceService) {}
-
-  ngOnInit(): void {
-    this.loadWorkExperienceData();  // Cargar los datos de experiencia laboral
-  }
-
-  loadWorkExperienceData(): void {
-    // Nos suscribimos al observable para obtener los datos de trabajo con sus id
-    this.workExperienceService.getWorkExperience().subscribe(data => {
-      this.workExperienceData = data;
+  constructor(public workExperienceService: WorkExperienceService) {
+    this.workExperienceService.getWorkExperience().snapshotChanges().pipe(
+      map(changes => 
+        changes.map(c => ({ id: c.payload.doc.id, ...c.payload.doc.data() }))
+      )
+    ).subscribe(data => {
+      this.workExperience = data;
     });
   }
 
-  addWorkExperience(): void {
-    if (this.myJob.position && this.myJob.company && this.myJob.startDate && this.myJob.endDate) {
-      this.workExperienceService.createWorkExperience(this.myJob).then(() => {
-        this.loadWorkExperienceData();  // Recargar los datos después de agregar un nuevo trabajo
-        this.myJob = new WorkExperience();  // Limpiar los campos del formulario
-      });
+  AgregarJob() {
+    if (this.selectedJobId) {
+      this.workExperienceService.updateWorkExperience(this.selectedJobId, this.myWorkExperience)
+        .then(() => {
+          console.log('REGISTRO ACTUALIZADO EXISTOSAMENTE');
+          this.resetForm();
+        })
+        .catch(err => console.log('ERROR AL ACTUALIZAR EL TRABAJO:', err));
     } else {
-      console.error('All fields must be filled out.');
+      this.workExperienceService.createWorkExperience(this.myWorkExperience)
+        .then(() => {
+          console.log('TRABAJO CREADO EXITOSAMENTE');
+          this.resetForm();
+        })
+        .catch((err: any) => console.log('ERROR AL AGREGAR EL TRABAJO:', err));
+    }
+  }
+  
+
+  EditarJob(job: WorkExperience) {
+    if (confirm(`¿DESEAS EDITAR EL TRABAJO EN ${job.company}?`)) {
+      this.myWorkExperience = { ...job };
+      this.selectedJobId = job.id ?? null; 
+      this.btntxt = "ACTUALIZAR";
     }
   }
 
-  deleteJob(id: string): void {
-    if (id) {
+  deleteJob(id?: string) {
+    if (confirm('¿ESTAS SEGURO DE ELIMINAR ESTE REGISTRO?')) {
       this.workExperienceService.deleteWorkExperience(id).then(() => {
-        this.loadWorkExperienceData();  // Recargar los datos después de eliminar un trabajo
-      }).catch(error => {
-        console.error('Error deleting work experience: ', error);
-      });
-    } else {
-      console.error('Invalid work experience ID');
+        console.log(' TRABAJO ELIMINADO EXITOSAMENTE');
+      }).catch(err => console.log('ERROR AL ELIMINAR EL TRABAJO: ', err));
     }
   }
+
+  resetForm() {
+    this.myWorkExperience = new WorkExperience();
+    this.selectedJobId = null;
+    this.btntxt = "AGREGAR";
+  }
 }
+

@@ -1,23 +1,28 @@
 <div class="container color-dark">
-    <div class="col">
-      <p>language items</p>
-    </div>
+  <div class="col">
+    <p>LANGUAGES</p>
   </div>
-  
-  <div class="container color-light">
-    <div class="col">
-      <form>
-        <input type="text" class="txt" name="idiomas" placeholder="Language" [(ngModel)]="myLanguage.idiomas"><br>
-        <input type="text" class="txt" name="nivel" placeholder="Level" [(ngModel)]="myLanguage.nivel"><br>
-        <input type="submit" class="btn" value="{{ btnText }}" (click)="addLanguage()">  <!-- btnText -->
-      </form>
-    </div>
-  
-    <div class="col">
-      <div class="life-container" *ngFor="let language of languagesData">
-        <input *ngIf="language.id" type="submit" class="txt" value="delete" (click)="deleteLanguage(language.id)">
-        {{language.idiomas}} - {{language.nivel}}
-      </div>
-    </div>
+</div>
+
+<div class="container color-light">
+  <div class="col">
+    <form>
+      <input type="text" class="txt" placeholder="IDIOMA" [(ngModel)]="myLanguage.idiomas" name="idiomas">
+      <input type="text" class="txt" placeholder="NIVEL" [(ngModel)]="myLanguage.nivel" name="nivel">
+      <input type="button" class="btn" [value]="btntxt" (click)="agregarLanguage()">
+    </form>
   </div>
-  
+
+  <br>
+  <div class="col">
+    <p class="life-container" *ngFor="let lang of languages">
+      <br>
+      <strong>IDIOMA:</strong> {{ lang.idiomas }} <br>
+      <strong>NIVEL:</strong> {{ lang.nivel }}
+      <br>
+      <br>
+      <input type="button" class="btn" value="EDITAR" (click)="editarLanguage(lang)" style="margin-right: 10px;">
+      <input type="button" class="btn" value="ELIMINAR" (click)="deleteLanguage(lang.id)">
+    </p>
+  </div>
+</div>

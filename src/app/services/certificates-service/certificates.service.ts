@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { Certificates } from '../../models/certificates/certificates.model';
 import { Observable } from 'rxjs';
 
@@ -7,21 +7,26 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CertificatesService {
+  private dbPath = '/certificates';
+  certificatesRef: AngularFirestoreCollection<Certificates>;
 
-  private collectionName = 'certificates';
-
-  constructor(private firestore: AngularFirestore) {}
-
-  getCertificates(): Observable<Certificates[]> {
-    return this.firestore.collection<Certificates>(this.collectionName).valueChanges();
+  constructor(private db: AngularFirestore) {
+    this.certificatesRef = db.collection(this.dbPath);
   }
 
-  createCertificate(cert: Certificates): Promise<void> {
-    const id = this.firestore.createId();
-    return this.firestore.collection(this.collectionName).doc(id).set(cert);
+  getCertificates(): AngularFirestoreCollection<Certificates> {
+    return this.certificatesRef;
   }
 
-  deleteCertificate(id: string): Promise<void> {
-    return this.firestore.collection(this.collectionName).doc(id).delete();
+  createCertificate(cert: Certificates): any {
+    return this.certificatesRef.add({ ...cert });
+  }
+
+  deleteCertificate(id?: string): Promise<void> {
+    return this.certificatesRef.doc(id).delete();
+  }
+
+  updateCertificate(id: string, cert: Certificates): Promise<void> {
+    return this.certificatesRef.doc(id).update(cert);
   }
 }

@@ -1,50 +1,64 @@
 import { Component, OnInit } from '@angular/core';
 import { CertificatesService } from '../services/certificates-service/certificates.service';
 import { Certificates } from '../models/certificates/certificates.model';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-admin-certificates',
   templateUrl: './admin-certificates.component.html',
   styleUrls: ['./admin-certificates.component.css']
 })
-export class AdminCertificatesComponent implements OnInit {
-
+export class AdminCertificatesComponent {
+  btntxt: string = "AGREGAR";
+  certificates: Certificates[] = [];
   myCertificate: Certificates = new Certificates();
-  certificatesData: Certificates[] = [];
-  btnText: string = 'Add Certificate';
+  selectedCertificateId: string | null = null;
 
-  constructor(private certificatesService: CertificatesService) {}
-
-  ngOnInit(): void {
-    this.loadCertificatesData();  // Cargar los datos de certificados
-  }
-
-  loadCertificatesData(): void {
-    this.certificatesService.getCertificates().subscribe(data => {
-      this.certificatesData = data;
+  constructor(public certificatesService: CertificatesService) {
+    this.certificatesService.getCertificates().snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c =>
+          ({ id: c.payload.doc.id, ...c.payload.doc.data() })
+        )
+      )
+    ).subscribe(data => {
+      this.certificates = data;
     });
   }
 
-  addCertificate(): void {
-    if (this.myCertificate.institution && this.myCertificate.certificacion) {
-      this.certificatesService.createCertificate(this.myCertificate).then(() => {
-        this.loadCertificatesData();  // Recargar los datos después de agregar un nuevo certificado
-        this.myCertificate = new Certificates();  // Limpiar los campos del formulario
-      });
+  AgregarCertificate() {
+    if (this.selectedCertificateId) {
+      if (confirm("¿DESEAS ACTUALIZAR ESTE CERTIFICADO?")) {
+        this.certificatesService.updateCertificate(this.selectedCertificateId, this.myCertificate).then(() => {
+          this.resetForm();
+        });
+      }
     } else {
-      console.error('All fields must be filled out.');
+      if (confirm("¿DESEAS AGREGAR ESTE CERTIFCADO?")) {
+        this.certificatesService.createCertificate(this.myCertificate).then(() => {
+          this.resetForm();
+        });
+      }
     }
   }
 
-  deleteCertificate(id: string): void {
-    if (id) {
+  deleteCertificate(id?: string) {
+    if (confirm("¿SEGURO QUE DESEAS ALIMINAR ESTE CERTIFICADO?")) {
       this.certificatesService.deleteCertificate(id).then(() => {
-        this.loadCertificatesData();  // Recargar los datos después de eliminar un certificado
-      }).catch(error => {
-        console.error('Error deleting certificate: ', error);
+        console.log('CERTIFICADO ELIMINADO CORRECTAMENTE');
       });
-    } else {
-      console.error('Invalid certificate ID');
     }
+  }
+
+  EditarCertificate(cert: Certificates) {
+    this.myCertificate = { ...cert };
+    this.selectedCertificateId = cert.id ?? null;
+    this.btntxt = "EDITAR";
+  }
+
+  resetForm() {
+    this.myCertificate = new Certificates();
+    this.selectedCertificateId = null;
+    this.btntxt = "AGREGAR";
   }
 }

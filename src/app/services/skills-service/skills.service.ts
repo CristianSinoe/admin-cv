@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { Skills } from '../../models/skills/skills.model';
 import { Observable } from 'rxjs';
 
@@ -7,24 +7,26 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class SkillsService {
+  private dbPath = '/Skills';
+  skillsRef: AngularFirestoreCollection<Skills>;
 
-  private collectionName = 'skills';
-
-  constructor(private firestore: AngularFirestore) {}
-
-  // Obtener todas las habilidades
-  getSkills(): Observable<Skills[]> {
-    return this.firestore.collection<Skills>(this.collectionName).valueChanges();
+  constructor(private db: AngularFirestore) {
+    this.skillsRef = db.collection(this.dbPath);
   }
 
-  // Crear una nueva habilidad
-  createSkill(skill: Skills): Promise<void> {
-    const id = this.firestore.createId();  // Crea un ID único para el documento
-    return this.firestore.collection(this.collectionName).doc(id).set(skill);
+  getSkills(): AngularFirestoreCollection<Skills> {
+    return this.skillsRef;
   }
 
-  // Eliminar una habilidad
-  deleteSkill(id: string): Promise<void> {
-    return this.firestore.collection(this.collectionName).doc(id).delete();
+  createSkill(skill: Skills): any {
+    return this.skillsRef.add({ ...skill });
+  }
+
+  updateSkill(id: string, skill: Skills): Promise<void> {
+    return this.skillsRef.doc(id).update(skill);
+  }
+
+  deleteSkill(id?: string): Promise<void> {
+    return this.skillsRef.doc(id).delete();
   }
 }

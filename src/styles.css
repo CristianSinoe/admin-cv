@@ -12,7 +12,7 @@ body {
   background: #000000;
   padding: 3em;
   font-family: 'Raleway', 'Arial';
-  color: #FFD700;
+  color: #FFD700; /* Dorado */
 }
 
 ul {
@@ -31,16 +31,16 @@ ul li a {
 }
 
 a {
-  color: #FFD700;
+  color: #FFD700; /* Dorado */
   text-decoration: none;
 }
 
-/* Global Styles for MYCV */
+/* MYCV Styles */
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #000000;
-  color: #FFD700;
+  color: #FFD700; /* Dorado */
 }
 
 .cv-container {
@@ -55,29 +55,9 @@ body {
 .cv-header {
   text-align: center;
   padding-bottom: 1rem;
-  border-bottom: 2px solid #FFD700;
+  border-bottom: 2px solid #FFD700; /* Dorado */
   transition: color 0.3s ease-in-out;
-  color: #FFD700;
-}
-
-.cv-header:hover,
-.cv-header:hover h1,
-.cv-header:hover h2,
-.cv-header:hover p,
-.cv-header:hover span,
-.cv-header:hover strong {
-  color: #FFD700;
-  text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 20px #FFD700;
-  animation: glow 1.5s ease-in-out infinite alternate;
-}
-
-@keyframes glow {
-  from {
-    text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 15px #FFD700;
-  }
-  to {
-    text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700, 0 0 30px #FFD700;
-  }
+  color: #FFD700; /* Dorado */
 }
 
 .cv-main {
@@ -97,112 +77,146 @@ body {
 table td > * {
   display: block;
   width: 100%;
-  height: 100%;
   padding: 1.5rem;
   margin: 0 0 1.5rem 0;
-  border-left: 3px solid gold;
-  border-bottom: 3px solid gold;
-  border-radius: 8px;
+  border-left: 3px solid #FFD700; /* Dorado */
+  border-bottom: 3px solid #FFD700; /* Dorado */
   background-color: #1f1f1f;
+  border-radius: 8px;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
-  animation: fadeInUp 0.8s ease forwards;
   opacity: 0;
 }
 
 table td > *:hover {
-  box-shadow: 0 0 15px #FFD700;
+  box-shadow: 0 0 15px #FFD700; /* Dorado */
   transform: translateY(-4px);
 }
 
 /* Section Hover Effect */
 section {
   background-color: #040505;
-  border-left: 3px solid #FFD700;
-  border-bottom: 3px solid #FFD700;
+  border-left: 3px solid #FFD700; /* Dorado */
+  border-bottom: 3px solid #FFD700; /* Dorado */
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
   transition: all 0.3s ease-in-out;
-  color: #FFD700;
-  animation: fadeInUp 0.8s ease forwards;
-  opacity: 0;
-  position: relative;
-  overflow: hidden;
-}
-
-section::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  border: 2px solid #FFD700;
-  opacity: 0.05;
-  animation: sparkleBorder 3s infinite ease-in-out;
-  pointer-events: none;
-}
-
-@keyframes sparkleBorder {
-  0%, 100% { opacity: 0.05; }
-  50% { opacity: 0.3; }
+  color: #FFD700; /* Dorado */
 }
 
 section:hover {
   transform: translateY(-5px);
-  box-shadow: 0 0 15px #FFD700;
-  color: #FFD700;
+  box-shadow: 0 0 15px #FFD700; /* Dorado */
+  color: #FFD700; /* Dorado */
 }
 
-section:hover h2, 
-section:hover h3, 
-section:hover p {
-  color: #FFD700;
+section:hover h2, section:hover h3, section:hover p {
+  color: #FFD700; /* Dorado */
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .cv-main {
-    flex-direction: column;
-  }
+button {
+  display: none;
+  transition: opacity 0.3s ease-in-out;
+}
 
-  table {
-    width: 100%;
-  }
+.selected {
+  display: block;
+  opacity: 1;
+}
 
-  table td {
-    display: block;
-    width: 100%;
-  }
+.cursor-trail {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: #FFD700; /* Dorado */
+  animation: fadeOut 0.8s ease-out forwards;
+  z-index: 9999;
+}
 
-  table td > * {
-    margin-bottom: 1rem;
-  }
+@keyframes fadeOut {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(2); }
+}
 
-  body {
-    font-size: 0.95rem;
-  }
+/* Add Cursor Trail Animation */
+.container {
+  border-radius: 10px;
+  margin: 20px auto;
+  padding: 20px;
+  max-width: 900px;
+}
 
-  section {
-    padding: 1rem;
-  }
+.color-dark {
+  background-color: #0d1117;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
 
-  h1 {
-    font-size: 1.5rem;
-  }
+.color-light {
+  background-color: #131414;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
 
-  h2 {
-    font-size: 1.2rem;
-  }
+.txt {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  font-size: 1rem;
+}
 
-  img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    margin: auto;
-  }
+.btn {
+  background-color: #FFD700;
+  color: white;
+  padding: 10px 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #000000;
+}
+
+.life-container {
+  background-color: #1d2024;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+}
+
+.btn-icon {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  margin-right: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-icon:hover {
+  background-color: #2563eb;
+}
+
+.btn-danger {
+  background-color: #ef4444;
+}
+
+.btn-danger:hover {
+  background-color: #dc2626;
 }
 
 /* Focus and Hover Effects for Input */
 input:focus {
-  border-color: #FFD700;
+  border-color: #FFD700; /* Dorado */
   outline: none;
 }
 
@@ -210,30 +224,8 @@ input[type="text"], input[type="email"], input[type="submit"] {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
-  border: 1px solid #cbe00b;
+  border: 1px solid #cbe00b; /* Dorado */
   border-radius: 5px;
-}
-
-/* Buttons Visibility */
-button {
-  display: none;
-  transition: opacity 0.3s ease-in-out;
-}
-
-/* Show Edit Buttons on Selection */
-.selected {
-  display: block;
-  opacity: 1;
-}
-
-/* Glow effect */
-h1, h2 {
-  animation: subtleGlow 3s infinite alternate;
-}
-
-@keyframes subtleGlow {
-  from { text-shadow: 0 0 5px #FFD700; }
-  to { text-shadow: 0 0 20px #FFD700; }
 }
 
 /* Add glow effect on hover */
@@ -247,20 +239,33 @@ h2:hover {
   100% { transform: scale(1); }
 }
 
-/* Add Cursor Trail Animation */
-.cursor-trail {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  pointer-events: none;
-  background: #FFD700;
-  box-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700;
-  animation: fadeOut 0.8s ease-out forwards;
-  z-index: 9999;
+.btn-spacing {
+  margin-right: 10px; /* Añadir espacio entre los botones */
 }
 
-@keyframes fadeOut {
-  0% { opacity: 1; transform: scale(1); }
-  100% { opacity: 0; transform: scale(2); }
+p {
+  color: #FFD700;
 }
+
+input {
+  color: #000000;
+}
+
+input {
+  color: #000000;  /* Cambia el color del texto ingresado en los campos de entrada a blanco */
+  background-color: #FFD700;  /* Si deseas que el fondo del campo sea negro para un buen contraste */
+}
+
+input::placeholder {
+  color: rgb(0, 0, 0);  /* Cambia el color del texto del placeholder a blanco */
+}
+
+textarea {
+  color: rgb(0, 0, 0);  /* Cambia el color del texto ingresado en el textarea a blanco */
+  background-color: #FFD700;  /* Cambia el fondo del textarea a negro para un buen contraste */
+}
+
+textarea::placeholder {
+  color: rgb(0, 0, 0);  /* Cambia el color del texto del placeholder a blanco */
+}
+

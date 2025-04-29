@@ -1,50 +1,57 @@
 import { Component, OnInit } from '@angular/core';
 import { InterestsService } from '../services/interests-service/interests.service';
 import { Interests } from '../models/interests/interests.model';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-admin-interests',
   templateUrl: './admin-interests.component.html',
   styleUrls: ['./admin-interests.component.css']
 })
-export class AdminInterestsComponent implements OnInit {
-
+export class AdminInterestsComponent {
+  interests: Interests[] = [];
   myInterest: Interests = new Interests();
-  interestsData: Interests[] = [];
-  btnText: string = 'Add Interest';
+  selectedInterestId: string | null = null;
+  btntxt: string = "AGREGAR";
 
-  constructor(private interestsService: InterestsService) {}
-
-  ngOnInit(): void {
-    this.loadInterestsData();  // Cargar los datos de intereses
-  }
-
-  loadInterestsData(): void {
-    this.interestsService.getInterests().subscribe(data => {
-      this.interestsData = data;
+  constructor(private interestsService: InterestsService) {
+    this.interestsService.getInterests().snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c => ({ id: c.payload.doc.id, ...c.payload.doc.data() }))
+      )
+    ).subscribe(data => {
+      this.interests = data;
     });
   }
 
-  addInterest(): void {
-    if (this.myInterest.interes) {
-      this.interestsService.createInterest(this.myInterest).then(() => {
-        this.loadInterestsData();  // Recargar los datos después de agregar un nuevo interés
-        this.myInterest = new Interests();  // Limpiar los campos del formulario
-      });
+  agregarInterest() {
+    if (this.selectedInterestId) {
+      if (confirm('¿DESEAS EDITAR ESTE INTERES?')) {
+        this.interestsService.updateInterest(this.selectedInterestId, this.myInterest).then(() => {
+          this.myInterest = new Interests();
+          this.btntxt = "AGREGAR";
+          this.selectedInterestId = null;
+        });
+      }
     } else {
-      console.error('All fields must be filled out.');
+      this.interestsService.createInterest(this.myInterest).then(() => {
+        this.myInterest = new Interests();
+      });
     }
   }
 
-  deleteInterest(id: string): void {
-    if (id) {
-      this.interestsService.deleteInterest(id).then(() => {
-        this.loadInterestsData();  // Recargar los datos después de eliminar un interés
-      }).catch(error => {
-        console.error('Error deleting interest: ', error);
-      });
-    } else {
-      console.error('Invalid interest ID');
+  editarInterest(interes: Interests) {
+    if (confirm('¿DESEAS CARGAR ESTE INTERES PARA EDITAR?')) {
+      this.myInterest = { ...interes };
+      this.selectedInterestId = interes.id!;
+      this.btntxt = "EDITAR";
+    }
+  }
+
+  deleteInterest(id?: string) {
+    if (confirm('¿DESEAS ELIMINAR ESTE INTERES?')) {
+      this.interestsService.deleteInterest(id);
     }
   }
 }
+

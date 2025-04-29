@@ -1,23 +1,30 @@
 <div class="container color-dark">
-    <div class="col">
-      <p>certificate items</p>
-    </div>
+  <div class="col">
+    <p>CERTIFICATES</p>
   </div>
-  
-  <div class="container color-light">
-    <div class="col">
-      <form>
-        <input type="text" class="txt" name="institution" placeholder="Institution" [(ngModel)]="myCertificate.institution"><br>
-        <input type="text" class="txt" name="certificacion" placeholder="Certification" [(ngModel)]="myCertificate.certificacion"><br>
-        <input type="submit" class="btn" value="{{ btnText }}" (click)="addCertificate()">  <!-- btnText -->
-      </form>
-    </div>
-  
-    <div class="col">
-      <div class="life-container" *ngFor="let cert of certificatesData">
-        <input *ngIf="cert.id" type="submit" class="txt" value="delete" (click)="deleteCertificate(cert.id)">
-        {{cert.institution}} - {{cert.certificacion}}
-      </div>
-    </div>
+</div>
+
+<div class="container color-light">
+  <div class="col">
+    <form>
+      <input type="text" class="txt" name="certificateName" placeholder="CERTIFICATES NAME"
+             [(ngModel)]="myCertificate.certificacion"> <br>
+      <input type="text" class="txt" name="institution" placeholder="INSTITUTION"
+             [(ngModel)]="myCertificate.institution"> <br>
+      <input type="button" class="btn" value="{{ btntxt }}" (click)="AgregarCertificate()">
+      <br>
+    </form>
   </div>
-  
+
+  <br>
+  <div class="col">
+    <p class="life-container" *ngFor="let cert of certificates">
+      {{ cert.certificacion }} - {{ cert.institution }}
+      <br>
+      <br>
+      <input type="button" class="btn" value="BORRAR" (click)="deleteCertificate(cert.id)" style="margin-right: 10px;">
+      <input type="button" class="btn" value="EDITAR" (click)="EditarCertificate(cert)">
+    </p>
+  </div>
+</div>
+

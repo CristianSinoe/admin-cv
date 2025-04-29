@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { Interests } from '../../models/interests/interests.model';
 import { Observable } from 'rxjs';
 
@@ -7,24 +7,26 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class InterestsService {
+  private dbPath = '/Interests';
+  interestsRef: AngularFirestoreCollection<Interests>;
 
-  private collectionName = 'interests';
-
-  constructor(private firestore: AngularFirestore) {}
-
-  // Obtener todos los intereses
-  getInterests(): Observable<Interests[]> {
-    return this.firestore.collection<Interests>(this.collectionName).valueChanges();
+  constructor(private db: AngularFirestore) {
+    this.interestsRef = db.collection(this.dbPath);
   }
 
-  // Crear un nuevo interés
-  createInterest(interest: Interests): Promise<void> {
-    const id = this.firestore.createId();  // Crea un ID único para el documento
-    return this.firestore.collection(this.collectionName).doc(id).set(interest);
+  getInterests(): AngularFirestoreCollection<Interests> {
+    return this.interestsRef;
   }
 
-  // Eliminar un interés
-  deleteInterest(id: string): Promise<void> {
-    return this.firestore.collection(this.collectionName).doc(id).delete();
+  createInterest(interes: Interests): any {
+    return this.interestsRef.add({ ...interes });
+  }
+
+  updateInterest(id: string, interes: Interests): Promise<void> {
+    return this.interestsRef.doc(id).update(interes);
+  }
+
+  deleteInterest(id?: string): Promise<void> {
+    return this.interestsRef.doc(id).delete();
   }
 }

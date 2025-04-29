@@ -1,23 +1,29 @@
 <div class="container color-dark">
-    <div class="col">
-      <p>skills items</p>
-    </div>
+  <div class="col">
+    <p>SKILLS</p>
   </div>
-  
-  <div class="container color-light">
-    <div class="col">
-      <form>
-        <input type="text" class="txt" name="lenguajes" placeholder="Languages" [(ngModel)]="mySkill.lenguajes"><br>
-        <input type="text" class="txt" name="tecnologias" placeholder="Technologies" [(ngModel)]="mySkill.tecnologias"><br>
-        <input type="submit" class="btn" value="{{ btnText }}" (click)="addSkill()">  <!-- btnText -->
-      </form>
-    </div>
-  
-    <div class="col">
-      <div class="life-container" *ngFor="let skill of skillsData">
-        <input *ngIf="skill.id" type="submit" class="txt" value="delete" (click)="deleteSkill(skill.id)">
-        {{skill.lenguajes}} - {{skill.tecnologias}}
-      </div>
-    </div>
+</div>
+
+<div class="container color-light">
+  <div class="col">
+    <form>
+      <input type="text" class="txt" placeholder="LENGUAJES" [(ngModel)]="mySkill.lenguajes" name="lenguajes">
+      <input type="text" class="txt" placeholder="TECNOLOGIAS" [(ngModel)]="mySkill.tecnologias" name="tecnologias">
+      <input type="button" class="btn" [value]="btntxt" (click)="agregarSkill()">
+    </form>
   </div>
+
+  <br>
+  <div class="col">
+    <p class="life-container" *ngFor="let skill of skills">
+      <br>
+      <strong>LENGUAJES:</strong> {{ skill.lenguajes }} <br>
+      <strong>TECNOLOGIAS:</strong> {{ skill.tecnologias }}
+      <br>
+      <br>
+      <input type="button" class="btn" value="EDITAR" (click)="editarSkill(skill)" style="margin-right: 10px;">
+      <input type="button" class="btn" value="ELIMINAR" (click)="deleteSkill(skill.id)">
+    </p>
+  </div>
+</div>
   

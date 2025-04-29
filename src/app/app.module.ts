@@ -1,36 +1,40 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms'; 
+import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AdminHeaderComponent } from './admin-header/admin-header.component';
-import { AdminWorkexperienceComponent } from './admin-workexperience/admin-workexperience.component';
-import { AdminEducationComponent } from './admin-education/admin-education.component';
 import { AdminCertificatesComponent } from './admin-certificates/admin-certificates.component';
-import { AdminSkillsComponent } from './admin-skills/admin-skills.component';
-import { AdminLanguagesComponent } from './admin-languages/admin-languages.component';
+import { AdminEducationComponent } from './admin-education/admin-education.component';
+import { AdminHeaderComponent } from './admin-header/admin-header.component';
 import { AdminInterestsComponent } from './admin-interests/admin-interests.component';
+import { AdminLanguagesComponent } from './admin-languages/admin-languages.component';
+import { AdminSkillsComponent } from './admin-skills/admin-skills.component';
+import { AdminWorkexperienceComponent } from './admin-workexperience/admin-workexperience.component';
+
+import { FormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../environments/environment';
-
+ 
 @NgModule({
   declarations: [
     AppComponent,
-    AdminHeaderComponent,
-    AdminWorkexperienceComponent,
-    AdminEducationComponent,
     AdminCertificatesComponent,
-    AdminSkillsComponent,
+    AdminEducationComponent,
+    AdminHeaderComponent,
+    AdminInterestsComponent,
     AdminLanguagesComponent,
-    AdminInterestsComponent
+    AdminSkillsComponent,
+    AdminWorkexperienceComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule,
     AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig) // Inicializa Firebase
+    FormsModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
   ],
-  providers: [],
+  providers: [
+    provideClientHydration()
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

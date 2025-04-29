@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { Header } from '../../models/header/header.model';
 import { Observable } from 'rxjs';
 
@@ -7,19 +7,28 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class HeaderService {
+  private dbPath = '/header';
+  headerRef: AngularFirestoreCollection<Header>
 
-  private collectionName = 'header';
-
-  constructor(private firestore: AngularFirestore) {}
-
-  // Obtener el único encabezado
-  getHeader(): Observable<Header[]> {
-    return this.firestore.collection<Header>(this.collectionName).valueChanges();
+  constructor(private db: AngularFirestore) {
+    this.headerRef = db.collection(this.dbPath);
   }
 
-  // Crear o actualizar el encabezado
-  createOrUpdateHeader(header: Header): Promise<void> {
-    const id = this.firestore.collection(this.collectionName).doc('header'); // Un solo documento en Firestore
-    return id.set(header);
+  getHeader(): AngularFirestoreCollection<Header> {
+    return this.headerRef;
   }
+
+  createHeader(data: Header): Promise<any> {
+    return this.headerRef.add({ ...data });
+  }
+  
+
+  updateHeader(id: string, data: Header): Promise<void> {
+    return this.db.collection(this.dbPath).doc(id).update(data);
+  }
+
+  deleteHeader(id: string): Promise<void> {
+    return this.headerRef.doc(id).delete();
+  }  
 }
+

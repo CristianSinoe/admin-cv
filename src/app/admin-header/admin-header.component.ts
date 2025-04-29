@@ -1,38 +1,59 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { HeaderService } from '../services/header-service/header.service';
 import { Header } from '../models/header/header.model';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-admin-header',
   templateUrl: './admin-header.component.html',
   styleUrls: ['./admin-header.component.css']
 })
-export class AdminHeaderComponent implements OnInit {
+export class AdminHeaderComponent {
+  myHeader: Header = new Header();
+  Header: Header[] = [];
+  btntxt: string = 'AGREGAR';
+  selectedHeaderId: string | null = null;
+  dataLoaded: boolean = false;
 
-  header: Header = new Header();
-  btnText: string = 'Update Header';
-
-  constructor(private headerService: HeaderService) {}
-
-  ngOnInit(): void {
-    this.loadHeaderData();  // Cargar el encabezado
-  }
-
-  loadHeaderData(): void {
-    this.headerService.getHeader().subscribe(data => {
-      this.header = data[0] || new Header(); // Supone que solo hay un documento en la colección
+  constructor(private headerService: HeaderService) {
+    this.headerService.getHeader().snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c => ({ id: c.payload.doc.id, ...c.payload.doc.data() }))
+      )
+    ).subscribe(data => {
+      console.log('LO QUE LLEGA AL HEADER:', data);
+      this.Header = data;
+      this.dataLoaded = true;
     });
   }
 
-  updateHeader(): void {
-    if (this.header.name && this.header.email && this.header.phoneNumber) {
-      this.headerService.createOrUpdateHeader(this.header).then(() => {
-        console.log('Header updated successfully');
-      }).catch(error => {
-        console.error('Error updating header: ', error);
-      });
+  onSubmit() {
+    if (this.selectedHeaderId) {
+      if (window.confirm('¿DESEAS ACTUALIZAR ESTE HEADER?')) {
+        this.headerService.updateHeader(this.selectedHeaderId, this.myHeader).then(() => {
+          alert('¡HEADER ACTUALIZADO!');
+          this.resetForm();
+        });
+      }
     } else {
-      console.error('All fields must be filled out.');
+      if (window.confirm('¿DESEAS AGREGAR ESTE HEADER?')) {
+        this.headerService.createHeader(this.myHeader).then(() => {
+          alert('¡HEADER AGREGADO CORRECTAMENTE!');
+          this.resetForm();
+        });
+      }
     }
+  }
+
+  resetForm() {
+    this.myHeader = new Header();
+    this.selectedHeaderId = null;
+    this.btntxt = 'AGREGAR';
+  }
+
+  editarHeader(headerObj: Header): void {
+    this.myHeader = { ...headerObj };
+    this.selectedHeaderId = headerObj.id ?? null;
+    this.btntxt = 'ACTUALIZAR'; 
   }
 }
