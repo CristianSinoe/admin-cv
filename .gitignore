@@ -76,6 +76,4 @@ Thumbs.db
 # Archivos generados de distribución
 *.log                
 # Archivos de log generales
-src/environments/
-
 ##
