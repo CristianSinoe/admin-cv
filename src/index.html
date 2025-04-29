@@ -2,12 +2,53 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>AdminCv</title>
+  <title>SINOE RUIZ ADMIN CV</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
+
+<style>
+  .cursor-trail {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    pointer-events: none;
+    background: #FFD700;
+    box-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700;
+    animation: fadeOut 0.8s ease-out forwards;
+    z-index: 9999;
+  }
+
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(2);
+    }
+  }
+</style>
+</head>
+
 <body>
-  <app-root></app-root>
+<app-root></app-root>
+
+<script>
+  document.addEventListener('mousemove', function (e) {
+    const trail = document.createElement('div');
+    trail.className = 'cursor-trail';
+    trail.style.left = e.pageX + 'px';
+    trail.style.top = e.pageY + 'px';
+    document.body.appendChild(trail);
+
+    setTimeout(() => {
+      trail.remove();
+    }, 800);
+  });
+</script>
 </body>
 </html>
