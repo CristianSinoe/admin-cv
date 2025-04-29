@@ -1,0 +1,38 @@
+name: Merge Develop to Release and Master
+
+on:
+  push:
+    branches:
+      - develop  # Se ejecutará al hacer push en la rama develop
+
+jobs:
+  deploy-to-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Checkout release branch
+        run: git checkout release
+
+      - name: Merge develop into release
+        run: |
+          git pull origin release
+          git merge develop
+          git push origin release
+
+  deploy-to-master:
+    runs-on: ubuntu-latest
+    needs: deploy-to-release  # Este job depende del anterior
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Checkout master branch
+        run: git checkout master
+
+      - name: Merge release into master
+        run: |
+          git pull origin master
+          git merge release
+          git push origin master
